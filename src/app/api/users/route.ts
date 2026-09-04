@@ -1,5 +1,12 @@
-import {NextResponse} from "next/server";
+import {
+	createUserController,
+	getAllUsersController,
+} from "@/src/features/user";
 
-export async function GET () {
-  return NextResponse.json({ message: "Hello, World!" });
+export async function GET() {
+	return getAllUsersController();
+}
+
+export async function POST(request: Request) {
+	return createUserController(request);
 }

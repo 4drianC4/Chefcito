@@ -1,0 +1,21 @@
+meta {
+  name: Replace User (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BaseUrl}}/api/users/{{userId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Juan",
+    "lastName": "Pérez Actualizado",
+    "email": "juan@ejemplo.com",
+    "password": "password123",
+    "active": true
+  }
+}

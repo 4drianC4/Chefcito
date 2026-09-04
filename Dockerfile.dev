@@ -1,0 +1,21 @@
+FROM node:22-alpine
+
+RUN corepack enable && corepack prepare pnpm@10.15.1 --activate
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install
+
+COPY . .
+
+ENV DATABASE_URL=postgresql://postgres:postgres@postgres:5432/chefcito?schema=public
+
+RUN pnpm exec prisma generate
+
+EXPOSE 3000
+
+ENV WATCHPACK_POLLING=true
+
+CMD ["pnpm", "dev"]
