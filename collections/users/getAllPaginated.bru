@@ -1,0 +1,16 @@
+meta {
+  name: Get All Users Paginated
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{BaseUrl}}/api/users/paginated?page=3&pageSize=5
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 3
+  pageSize: 5
+}

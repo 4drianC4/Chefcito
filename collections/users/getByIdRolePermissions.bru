@@ -1,0 +1,15 @@
+meta {
+  name: Get User With Role Permissions
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{BaseUrl}}/api/users/{{userId}}/role-permissions
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  userId: cmtrtjalj000778rs4b9tmxrm
+}

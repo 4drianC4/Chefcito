@@ -1,0 +1,17 @@
+meta {
+  name: Search Users By Name
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{BaseUrl}}/api/users/search?q=p&page=1&pageSize=10
+  body: none
+  auth: none
+}
+
+params:query {
+  q: p
+  page: 1
+  pageSize: 10
+}

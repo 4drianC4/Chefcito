@@ -15,6 +15,27 @@ const passwordSchema = z
 	.min(8, "Password must contain at least 8 characters")
 	.max(32, "Password must contain at most 32 characters");
 
+export const paginationSchema = z.object({
+	page: z.coerce.number().int().min(1).default(1),
+	pageSize: z.coerce.number().int().min(1).max(100).default(10),
+});
+
+export const searchUsersSchema = paginationSchema.extend({
+	q: z.string().trim().min(1, "Search must contain at least 1 character"),
+});
+
+export const bulkAssignRoleSchema = z.object({
+	roleId: z.cuid("Role id must be a valid cuid"),
+	userIds: z
+		.array(z.cuid("User id must be a valid cuid"))
+		.min(1, "At least one user id must be provided"),
+});
+
+const profileSchema = z.object({
+	bio: z.string().trim().max(500).optional(),
+	avatarUrl: z.url().optional(),
+});
+
 export const userIdSchema = z.object({
 	id: z.cuid("User id must be a valid cuid"),
 });
@@ -25,6 +46,10 @@ export const createUserSchema = z.object({
 	email: emailSchema,
 	password: passwordSchema,
 	roleId: z.cuid("Role id must be a valid cuid").nullable().optional(),
+});
+
+export const createUserWithProfileSchema = createUserSchema.extend({
+	profile: profileSchema.optional(),
 });
 
 export const putUserSchema = z.object({

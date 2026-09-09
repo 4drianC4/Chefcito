@@ -1,0 +1,24 @@
+meta {
+  name: Create User With Nested Profile
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{BaseUrl}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Usuario Nested",
+    "lastName": "Profile",
+    "email": "nested-{{$timestamp}}@ejemplo.com",
+    "password": "password123",
+    "profile": {
+      "bio": "Usuario creado con nested write",
+      "avatarUrl": "https://example.com/avatar.png"
+    }
+  }
+}

@@ -4,3 +4,7 @@ export { getUserByIdController } from "./backend/controllers/crud/getById";
 export { putUserController } from "./backend/controllers/crud/put";
 export { patchUserController } from "./backend/controllers/crud/patch";
 export { deleteUserController } from "./backend/controllers/crud/delete";
+export { getAllUsersPaginatedController } from "./backend/controllers/crud/getAllPaginated";
+export { getUserByIdWithRolePermissionsController } from "./backend/controllers/crud/getByIdWithRolePermissions";
+export { searchUsersByNameController } from "./backend/controllers/crud/searchByName";
+export { bulkAssignRoleController } from "./backend/controllers/crud/bulkAssignRole";
