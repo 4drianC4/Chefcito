@@ -1,5 +1,5 @@
 import { bulkAssignRoleSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { bulkAssignRoleService } from "@/src/features/user/backend/services/crud/bulkAssignRole";
+import { bulkAssignRoleService } from "@/src/features/user/backend/services/user/bulkAssignRole";
 import {
 	handleUserControllerError,
 	NotFoundError,

@@ -3,64 +3,61 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
 model User {
-    id String @id @default(cuid())
-    name String
-    lastName String
-    email String @unique
-    password String
-    active Boolean @default(true)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    deletedAt DateTime?
-
-    roleId String?
-    role role? @relation(fields: [roleId], references: [id], onDelete: SetNull)
-    profile profile?
-    sessions Session[]
-
+  id        String    @id @default(cuid())
+  name      String
+  lastName  String
+  email     String    @unique
+  password  String
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  roleId    String?
+  sessions  Session[]
+  role      role?     @relation(fields: [roleId], references: [id])
+  profile   profile?
 }
 
 model Session {
-    id String @id @default(cuid())
-    sessionToken String @unique
-    userId String
-    expires DateTime
-    createdAt DateTime @default(now())
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
+  @@index([userId])
 }
 
 model profile {
-    id String @id @default(cuid())
-    userId String @unique
-    bio String?
-    avatarUrl String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  bio       String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model role {
-    id String @id @default(cuid())
-    name String @unique
-    description String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    users User[]
-    permissions permission[] 
+  id          String       @id @default(cuid())
+  name        String       @unique
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  users       User[]
+  permissions permission[] @relation("permissionTorole")
 }
 
 model permission {
-    id String @id @default(cuid())
-    name String @unique
-    description String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    roles role[]
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  roles       role[]   @relation("permissionTorole")
 }

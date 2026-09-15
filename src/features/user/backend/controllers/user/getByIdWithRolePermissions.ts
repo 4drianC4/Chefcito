@@ -1,5 +1,5 @@
 import { userIdSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { getUserByIdWithRolePermissionsService } from "@/src/features/user/backend/services/crud/getByIdWithRolePermissions";
+import { getUserByIdWithRolePermissionsService } from "@/src/features/user/backend/services/user/getByIdWithRolePermissions";
 import {
 	handleUserControllerError,
 	NotFoundError,

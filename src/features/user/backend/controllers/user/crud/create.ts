@@ -1,5 +1,5 @@
 import { createUserWithProfileSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { createUserService } from "@/src/features/user/backend/services/crud/create";
+import { createUserService } from "@/src/features/user/backend/services/user/crud/create";
 import { handleUserControllerError } from "@/src/features/user/backend/controllers/shared";
 import { ok } from "@/src/shared/lib/api-response";
 

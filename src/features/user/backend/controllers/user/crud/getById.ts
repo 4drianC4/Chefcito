@@ -1,5 +1,5 @@
 import { userIdSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { getUserByIdService } from "@/src/features/user/backend/services/crud/getById";
+import { getUserByIdService } from "@/src/features/user/backend/services/user/crud/getById";
 import {
 	handleUserControllerError,
 	NotFoundError,

@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -92,9 +93,12 @@ try {
 			roles.set(savedRole.name, savedRole);
 		}
 
-		for (const [index, user] of userData.entries()) {
+		const SALT_ROUNDS = 10;
+
+for (const [index, user] of userData.entries()) {
 			const email = `seed.user${index + 1}@example.com`;
 			const role = roles.get(user.role);
+			const passwordHash = await bcrypt.hash("password123", SALT_ROUNDS);
 
 			await tx.user.upsert({
 				where: { email },
@@ -121,7 +125,7 @@ try {
 					name: user.name,
 					lastName: user.lastName,
 					email,
-					password: "password123",
+					password: passwordHash,
 					role: { connect: { id: role.id } },
 					profile: {
 						create: {

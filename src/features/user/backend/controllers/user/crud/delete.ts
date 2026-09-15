@@ -1,5 +1,5 @@
 import { userIdSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { deleteUserService } from "@/src/features/user/backend/services/crud/delete";
+import { deleteUserService } from "@/src/features/user/backend/services/user/crud/delete";
 import { handleUserControllerError } from "@/src/features/user/backend/controllers/shared";
 import { ok } from "@/src/shared/lib/api-response";
 

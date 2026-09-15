@@ -1,5 +1,5 @@
 import { searchUsersSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { searchUsersByNameService } from "@/src/features/user/backend/services/crud/searchByName";
+import { searchUsersByNameService } from "@/src/features/user/backend/services/user/searchByName";
 import { handleUserControllerError } from "@/src/features/user/backend/controllers/shared";
 import { ok } from "@/src/shared/lib/api-response";
 

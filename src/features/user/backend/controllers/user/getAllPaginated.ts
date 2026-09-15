@@ -1,5 +1,5 @@
 import { paginationSchema } from "@/src/features/user/shared/schemas/user.schema";
-import { getAllUsersPaginatedService } from "@/src/features/user/backend/services/crud/getAllPaginated";
+import { getAllUsersPaginatedService } from "@/src/features/user/backend/services/user/getAllPaginated";
 import { handleUserControllerError } from "@/src/features/user/backend/controllers/shared";
 import { ok } from "@/src/shared/lib/api-response";
 
