@@ -25,6 +25,7 @@ export type UserResponseDto = {
 	lastName: string;
 	email: string;
 	active: boolean;
+	photoUrl: string | null;
 	roleId: string | null;
 	createdAt: Date;
 	updatedAt: Date;

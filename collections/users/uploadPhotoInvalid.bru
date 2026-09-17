@@ -1,0 +1,23 @@
+meta {
+  name: Upload User Photo (Invalid File)
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{BaseUrl}}/api/users/cmtrtjalt000978rs6f6zvrjp/photo
+  body: file
+  auth: none
+}
+
+body:multipart-form {
+  photo: @file(./not-an-image.txt)
+}
+
+docs {
+  Prueba la validación Zod del endpoint de fotos enviando un archivo
+  que NO es una imagen (por ejemplo un .txt).
+  
+  Debe responder 400 con:
+  { "error": "Solo se permiten imágenes (png, jpg, webp, gif)" }
+}

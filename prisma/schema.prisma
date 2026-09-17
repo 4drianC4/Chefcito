@@ -10,6 +10,7 @@ model User {
   id        String    @id @default(cuid())
   name      String
   lastName  String
+  photoUrl  String?
   email     String    @unique
   password  String
   active    Boolean   @default(true)

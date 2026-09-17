@@ -10,7 +10,11 @@ export default async function proxy(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   const cookieStore = await cookies();
-  const session = cookieStore.get("session")?.value;
+  // NextAuth v5 guarda el JWT en "authjs.session-token" (dev) o
+  // "__Secure-authjs.session-token" (prod con HTTPS)
+  const session =
+    cookieStore.get("authjs.session-token")?.value ??
+    cookieStore.get("__Secure-authjs.session-token")?.value;
 
   if (isProtectedRoute && !session) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));

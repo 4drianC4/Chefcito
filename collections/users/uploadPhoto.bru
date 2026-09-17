@@ -1,0 +1,29 @@
+meta {
+  name: Upload User Photo
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{BaseUrl}}/api/users/cmtrtjalt000978rs6f6zvrjp/photo
+  body: file
+  auth: none
+}
+
+body:multipart-form {
+  photo: @file(./test.png)
+}
+
+body:file {
+  file: @file(/home/adrian/Pictures/Screenshots/1.png) @contentType(image/png)
+}
+
+docs {
+  Sube una foto de perfil al usuario. El archivo se guarda en MinIO
+  y su URL pública se persiste en `User.photoUrl`.
+  
+  - Campo del formulario: `photo` (multipart/form-data)
+  - Solo se permiten imágenes: png, jpeg, webp, gif (máx. 5MB)
+  - Cambia `@file(./test.png)` por la ruta real de tu imagen
+  - Respuestas: 200 usuario actualizado · 400 archivo inválido · 404 usuario no encontrado
+}

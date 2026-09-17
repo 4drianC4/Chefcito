@@ -102,11 +102,12 @@ for (const [index, user] of userData.entries()) {
 
 			await tx.user.upsert({
 				where: { email },
-				update: {
-					name: user.name,
-					lastName: user.lastName,
-					active: true,
-					deletedAt: null,
+			update: {
+				name: user.name,
+				lastName: user.lastName,
+				password: passwordHash,
+				active: true,
+				deletedAt: null,
 					role: { connect: { id: role.id } },
 					profile: {
 						upsert: {
