@@ -14,6 +14,10 @@ body:multipart-form {
   photo: @file(./not-an-image.txt)
 }
 
+body:file {
+  file: @file(/home/adrian/Downloads/fotito.png.php) @contentType(application/x-httpd-php)
+}
+
 docs {
   Prueba la validación Zod del endpoint de fotos enviando un archivo
   que NO es una imagen (por ejemplo un .txt).

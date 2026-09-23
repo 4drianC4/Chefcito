@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/src/shared/ui/button";
+import { Input } from "@/src/shared/ui/input";
 import { useUserStore } from "@/src/shared/stores/useUserStore";
 
 const userSchema = z.object({
@@ -41,19 +42,19 @@ export function UserForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <label className="block text-sm font-medium text-slate-300">
+      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
         Nombre
-        <input {...register("name")} className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none ring-amber-400 focus:ring-2" />
-        {errors.name && <span className="mt-1 block text-xs text-rose-300">{errors.name.message}</span>}
+        <Input {...register("name")} className="mt-2" />
+        {errors.name && <span className="mt-1 block text-xs text-rose-600 dark:text-rose-300">{errors.name.message}</span>}
       </label>
-      <label className="block text-sm font-medium text-slate-300">
+      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
         Email
-        <input type="email" {...register("email")} className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none ring-amber-400 focus:ring-2" />
-        {errors.email && <span className="mt-1 block text-xs text-rose-300">{errors.email.message}</span>}
+        <Input type="email" {...register("email")} className="mt-2" />
+        {errors.email && <span className="mt-1 block text-xs text-rose-600 dark:text-rose-300">{errors.email.message}</span>}
       </label>
       <Button type="submit" disabled={isSubmitting}>Crear usuario</Button>
-      {message && <p className="text-sm text-amber-300">{message}</p>}
-      {lastCreatedEmail && <p className="text-xs text-slate-500">Último registro: {lastCreatedEmail}</p>}
+      {message && <p className="text-sm text-emerald-700 dark:text-emerald-300">{message}</p>}
+      {lastCreatedEmail && <p className="text-xs text-stone-500">Último registro: {lastCreatedEmail}</p>}
     </form>
   );
 }
