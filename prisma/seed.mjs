@@ -137,9 +137,116 @@ for (const [index, user] of userData.entries()) {
 				},
 			});
 		}
+		// --- Módulo 2: platillos ---
+		const dishData = [
+			{
+				name: "Lomo saltado",
+				description: "Jugoso lomo fino salteado al wok con cebolla, tomate y papas fritas.",
+				price: 35.0,
+				category: "platos_fuertes",
+				preparationTime: 20,
+				isVegetarian: false,
+			},
+			{
+				name: "Ceviche clásico",
+				description: "Pescado fresco marinado en limón con cebolla morada, ají y camote.",
+				price: 32.0,
+				category: "entradas",
+				preparationTime: 15,
+				isVegetarian: false,
+			},
+			{
+				name: "Ají de gallina",
+				description: "Pollo deshilachado en cremosa salsa de ají amarillo con papa y arroz.",
+				price: 28.0,
+				category: "platos_fuertes",
+				preparationTime: 25,
+				isVegetarian: false,
+			},
+			{
+				name: "Ensalada de la casa",
+				description: "Mix de hojas verdes, palta, tomate cherry y vinagreta de maracuyá.",
+				price: 18.0,
+				category: "ensaladas",
+				preparationTime: 10,
+				isVegetarian: true,
+			},
+			{
+				name: "Chicha morada",
+				description: "Refrescante bebida de maíz morado con piña, canela y clavo de olor.",
+				price: 8.0,
+				category: "bebidas",
+				preparationTime: 5,
+				isVegetarian: true,
+			},
+			{
+				name: "Suspiro a la limeña",
+				description: "Dulce de leche coronado con merengue al oporto y un toque de canela.",
+				price: 12.0,
+				category: "postres",
+				preparationTime: 10,
+				isVegetarian: true,
+				available: false,
+			},
+		];
+
+		const dishes = new Map();
+
+		for (const dish of dishData) {
+			const existing = await tx.dish.findFirst({ where: { name: dish.name } });
+			const savedDish = existing
+				? await tx.dish.update({ where: { id: existing.id }, data: dish })
+				: await tx.dish.create({ data: dish });
+			dishes.set(savedDish.name, savedDish);
+		}
+
+		// --- Módulo 4: pedidos (comandas) ---
+		if ((await tx.order.count()) === 0) {
+			const orderData = [
+				{
+					tableNumber: 3,
+					status: "en_preparacion",
+					items: [
+						{ dish: "Lomo saltado", quantity: 2 },
+						{ dish: "Chicha morada", quantity: 2 },
+					],
+				},
+				{
+					tableNumber: 7,
+					status: "enviado",
+					items: [{ dish: "Ceviche clásico", quantity: 1 }],
+				},
+				{
+					tableNumber: 5,
+					status: "servido",
+					waiterNotes: "El suspiro sin canela",
+					items: [
+						{ dish: "Ají de gallina", quantity: 2 },
+						{ dish: "Suspiro a la limeña", quantity: 2 },
+					],
+				},
+			];
+
+			for (const order of orderData) {
+				await tx.order.create({
+					data: {
+						tableNumber: order.tableNumber,
+						status: order.status,
+						waiterNotes: order.waiterNotes ?? null,
+						items: {
+							create: order.items.map((item) => ({
+								dish: { connect: { id: dishes.get(item.dish).id } },
+								quantity: item.quantity,
+								unitPrice: dishes.get(item.dish).price,
+							})),
+						},
+					},
+				});
+			}
+		}
 	});
 
-	console.log("Seed completed: 3 roles, 4 permissions, 12 users and profiles.");
+	console.log("Seed completed: 3 roles, 4 permissions, 12 users and profiles, 6 dishes and 3 orders.");
 } finally {
 	await prisma.$disconnect();
 }

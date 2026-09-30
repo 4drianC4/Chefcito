@@ -54,6 +54,60 @@ model role {
   permissions permission[] @relation("permissionTorole")
 }
 
+enum DishCategory {
+  entradas
+  platos_fuertes
+  postres
+  bebidas
+  ensaladas
+}
+
+enum OrderStatus {
+  enviado
+  en_preparacion
+  servido
+  pagado
+}
+
+model Dish {
+  id              String       @id @default(cuid())
+  name            String
+  description     String
+  price           Float
+  category        DishCategory
+  imageUrl        String?
+  preparationTime Int
+  available       Boolean      @default(true)
+  isVegetarian    Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  orderItems      OrderItem[]
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  tableNumber Int
+  waiterNotes String?
+  status      OrderStatus @default(enviado)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  dishId    String
+  quantity  Int
+  unitPrice Float
+  notes     String?
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  dish      Dish    @relation(fields: [dishId], references: [id])
+
+  @@index([orderId])
+  @@index([dishId])
+}
+
 model permission {
   id          String   @id @default(cuid())
   name        String   @unique
