@@ -6,6 +6,13 @@ datasource db {
   provider = "postgresql"
 }
 
+enum MovementType {
+  ENTRADA
+  SALIDA
+  ADJUSTMENT
+  MERMA
+}
+
 model User {
   id        String    @id @default(cuid())
   name      String
@@ -21,6 +28,8 @@ model User {
   sessions  Session[]
   role      role?     @relation(fields: [roleId], references: [id])
   profile   profile?
+
+  stockMovements StockMovement[]
 }
 
 model Session {
@@ -61,4 +70,107 @@ model permission {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   roles       role[]   @relation("permissionTorole")
+}
+
+model StockMovement {
+  id          String   @id @default(cuid())
+  movementType MovementType
+  quantity    Decimal @db.Decimal(10, 3)
+  previousStock Decimal @db.Decimal(10, 3)
+  newStock   Decimal @db.Decimal(10, 3)
+  reason      String?
+  createdAt   DateTime @default(now())
+
+  userId     String
+  ingredientId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Unit {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  code        String   @unique
+  allowedDecimals Boolean  @default(false)
+
+  ingredients Ingredient[]
+  unitConversionsFrom UnitConversion[] @relation("fromUnit")
+  unitConversionsTo UnitConversion[] @relation("toUnit")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UnitConversion {
+  id          String   @id @default(cuid())
+  fromUnitId  String
+  toUnitId    String
+  conversionFactor Decimal @db.Decimal(10, 6)
+
+  fromUnit Unit @relation("fromUnit", fields: [fromUnitId], references: [id], onDelete: Cascade)
+  toUnit   Unit @relation("toUnit", fields: [toUnitId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([fromUnitId, toUnitId])
+}
+
+model Ingredient {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  currentStock Decimal @db.Decimal(10, 3) @default(0)
+  minimumStock Decimal @db.Decimal(10, 3) @default(0)
+  isActive   Boolean  @default(true)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  unitId String
+
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  stockMovements StockMovement[]
+  recipeUsages RecipeIngredient[]
+}
+
+model Dish {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  imageUrl  String?
+  isAvailable   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  categoryId String
+
+  recipeIngredients RecipeIngredient[]
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  dishes Dish[]
+}
+
+model RecipeIngredient {
+  dishId       String
+  ingredientId String
+  quantity     Decimal @db.Decimal(10, 3)
+
+  dish       Dish       @relation(fields: [dishId], references: [id])
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@id([dishId, ingredientId])
 }
